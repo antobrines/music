@@ -1,0 +1,29 @@
+<div class="container py-5">
+  <h1 class="display-4">Nos albums</h1>
+  <div class="row mt-5">
+    <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let album of albums; let i = index">
+      <div class="card h-100" style="width: 18rem;">
+        <div *ngFor="let photo of album.photos; let first = first">
+          <img [src]="photo" *ngIf="first" class="card-img-top">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ album.nom }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ album.category }}</h6>
+          <span>
+            de {{ artists[album.artistId].nom}}
+          </span>
+          <span>
+            sortie en {{ album.annee }}
+          </span>
+          <p class="card-text">
+            {{ album.prix }} €
+          </p>
+          <div class="text-center">
+            <button class="btn btn-primary" type="button" [routerLink]="['/album', albumsKeys[i]]">Voir cet
+              album</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
