@@ -12,18 +12,19 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="d-flex">
-						<h3 class="font-weight-normal">{{ artists[artistsKey[i]].nom }}</h3>
+						<h3 class="font-weight-normal">{{ artists[artistsKey[i]]?.nom }}, {{
+							this.artistsService.getPaysName(artists[artistsKey[i]]?.pays) }}</h3>
 						<div class="ml-auto">
 							<button class="btn btn-primary m-1" type="button"
-								(click)="onEditArtist(artists[artistsKey[i]], artistsKey[i])"><i
-									class="fas fa-edit"></i></button>
-							<button class="btn btn-danger m-1" type="button" (click)="onDeleteArtist(artistsKey[i])"><i
+								(click)="onEditArtist(artists[artistsKey[i]], i)"><i class="fas fa-edit"></i></button>
+							<button class="btn btn-danger m-1" type="button" (click)="onDeleteArtist(i)"><i
 									class="fas fa-trash-alt"></i></button>
 						</div>
 					</div>
 					<p>
-						{{ artists[artistsKey[i]].pays }} de {{ artists[artistsKey[i]].genre
-						}}, {{ artists[artistsKey[i]].type
+						{{
+						this.artistsService.getGenreName(artists[artistsKey[i]]?.genre)
+						}}, {{ this.artistsService.getTypeName(artists[artistsKey[i]]?.type)
 						}}
 					</p>
 				</div>
@@ -39,7 +40,7 @@
 		<div class="modal-content">
 			<form [formGroup]="artistsForm" (ngSubmit)="onSubmitArtistsForm()">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Edition d'un artist</h5>
+					<h5 class="modal-title" id="exampleModalCenterTitle">Edition d'un artiste</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -53,7 +54,8 @@
 							<label class="input-group-text" for="inputGroupSelect01">Type</label>
 						</div>
 						<select class="custom-select" id="inputGroupSelect01" formControlName="type">
-							<option *ngFor="let type of types" [ngValue]="type.value">{{type.nom}}</option>
+							<option *ngFor="let type of this.artistsService.getTypes()" [ngValue]="type.value">
+								{{type.nom}}</option>
 						</select>
 					</div>
 					<div class="input-group mb-3">
@@ -61,7 +63,8 @@
 							<label class="input-group-text" for="inputGroupSelect02">Genre</label>
 						</div>
 						<select class="custom-select" id="inputGroupSelect02" formControlName="genre">
-							<option *ngFor="let genre of genres" [ngValue]="genre.value">{{genre.nom}}</option>
+							<option *ngFor="let genre of this.artistsService.getGenres()" [ngValue]="genre.value">
+								{{genre.nom}}</option>
 						</select>
 					</div>
 					<div class="input-group mb-3">
@@ -69,7 +72,8 @@
 							<label class="input-group-text" for="inputGroupSelect03">Pays</label>
 						</div>
 						<select class="custom-select" id="inputGroupSelect03" formControlName="pays">
-							<option *ngFor="let pays of pays" [ngValue]="pays.value">{{pays.nom}}</option>
+							<option *ngFor="let pays of this.artistsService.getPays()" [ngValue]="pays.value">
+								{{pays.nom}}</option>
 						</select>
 					</div>
 
@@ -90,7 +94,8 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalCenterTitle">Supprimer ce bien ?</h5>
+				<h5 class="modal-title" id="exampleModalCenterTitle">Supprimer cet artiste ? (Si il dispose d'albums ils
+					seront supprimés aussi)</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

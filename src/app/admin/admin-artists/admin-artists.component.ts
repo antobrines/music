@@ -41,58 +41,9 @@ export class AdminArtistsComponent implements OnInit {
    */
   editMode = false;
 
-  types = [
-    {
-      nom: 'Groupe',
-      value: 'G'
-    },
-    {
-      nom: 'Solo',
-      value: 'S'
-    }
-  ];
-
-  pays = [
-    {
-      nom: 'France',
-      value: 'FRA'
-    },
-    {
-      nom: 'Angleterre',
-      value: 'ANG'
-    },
-    {
-      nom: 'Canada',
-      value: 'CAN'
-    },
-    {
-      nom: 'Etats-unis',
-      value: 'USA'
-    }
-  ];
-
-  genres = [
-    {
-      nom: 'Jazz',
-      value: 'JAZ'
-    },
-    {
-      nom: 'Roc & Roll',
-      value: 'ROC'
-    },
-    {
-      nom: 'Pop',
-      value: 'POP'
-    },
-    {
-      nom: 'Métal',
-      value: 'HME'
-    }
-  ];
-
   constructor(
     private formBuilder: FormBuilder,
-    private artistsService: ArtistsService,
+    public artistsService: ArtistsService,
     private albumsService: AlbumsService
   ) { }
 
@@ -109,7 +60,6 @@ export class AdminArtistsComponent implements OnInit {
     this.artistsKeysSubscription = this.artistsService.artistsKeysSubject.subscribe(
       (data: any[]) => {
         this.artistsKey = data;
-        console.log(this.artistsKey);
       }
     );
     this.artistsService.getArtists();
@@ -162,6 +112,7 @@ export class AdminArtistsComponent implements OnInit {
     // Delete albums later
     this.albumsService.deleteArtistAlbums(this.indexToRemove);
     this.artistsService.deleteArtist(this.indexToRemove);
+    this.artistsService.getArtists();
     $('#deleteArtistModal').modal('hide');
   }
   /**

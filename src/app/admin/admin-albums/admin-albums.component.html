@@ -11,22 +11,23 @@
     <div *ngFor="let album of albums; let i = index" class="col-12 shadow-sm p-4 mb-3 bg-light">
       <div class="row">
         <div class="col-3">
-          <div *ngFor="let photo of album.photos; let first = first">
+          <div *ngFor="let photo of albums[albumsKey[i]].photos; let first = first">
             <img *ngIf="first" [src]="photo" class="w-100">
           </div>
         </div>
         <div class="col-9">
           <div class="d-flex">
-            <h3 class="font-weight-normal">{{ album.nom }} part {{ artists[album.artistId].nom}}</h3>
+            <h3 class="font-weight-normal">{{ albums[albumsKey[i]]?.nom }} part {{
+              artists[albums[albumsKey[i]].artistId]?.nom}}</h3>
             <div class="ml-auto">
-              <button class="btn btn-primary m-1" type="button" (click)="onEditAlbum(album, i)"><i
+              <button class="btn btn-primary m-1" type="button" (click)="onEditAlbum(albums[albumsKey[i]], i)"><i
                   class="fas fa-edit"></i></button>
               <button class="btn btn-danger m-1" type="button" (click)="onDeleteAlbum(i)"><i
                   class="fas fa-trash-alt"></i></button>
             </div>
           </div>
           <p>
-            Sortie en {{ album.annee }} et coûte {{ album.prix }}€
+            Sortie en {{ albums[albumsKey[i]]?.annee }} et coûte {{ albums[albumsKey[i]]?.prix }}€
           </p>
         </div>
       </div>
@@ -41,7 +42,7 @@
     <div class="modal-content">
       <form [formGroup]="albumsForm" (ngSubmit)="onSubmitAlbumsForm()">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalCenterTitle">Edition d'un bien</h5>
+          <h5 class="modal-title" id="exampleModalCenterTitle">Edition d'un album</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -63,7 +64,7 @@
               <input type="text" placeholder="Date de sortie" class="form-control" formControlName="annee">
             </div>
             <div class="form-group col-6">
-              <input type="text" placeholder="Prix" class="form-control" formControlName="prix">
+              <input type="text" placeholder="Prix, exemple: 4.95" class="form-control" formControlName="prix">
             </div>
           </div>
           <div class="row">
@@ -108,7 +109,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Supprimer ce bien ?</h5>
+        <h5 class="modal-title" id="exampleModalCenterTitle">Supprimer cet album ?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

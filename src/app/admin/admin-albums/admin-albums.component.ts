@@ -95,13 +95,13 @@ export class AdminAlbumsComponent implements OnInit {
   initAlbumsForm() {
     this.albumsForm = this.formBuilder.group({
       nom: ['', Validators.required],
-      annee: ['', Validators.required],
-      prix: ['', Validators.required],
+      annee: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      prix: ['', [Validators.required, Validators.pattern(/^[0-9]+\.?[0-9]{0,2}$/)]],
       artistId: ['', Validators.required],
     });
   }
   /**
-   * Ajoute ou modifie une property
+   * Ajoute ou modifie une album
    */
   onSubmitAlbumsForm() {
     const newAlbum: Album = this.albumsForm.value;
@@ -112,9 +112,7 @@ export class AdminAlbumsComponent implements OnInit {
       this.albumsService.createAlbum(newAlbum);
     }
     this.albumsService.getAlbums();
-    this.albumsService.emitAlbums();
     this.artistsService.getArtists();
-    this.artistsService.emitArtists();
     $('#albumsFormModal').modal('hide');
   }
   /**
@@ -126,7 +124,7 @@ export class AdminAlbumsComponent implements OnInit {
     this.photosAdded = [];
   }
   /**
-   * Permet d'initialiser l'index à supprimer lors de la selecter d'une property
+   * Permet d'initialiser l'index à supprimer lors de la selecter d'une album
    *  index
    */
   onDeleteAlbum(index) {
@@ -134,7 +132,7 @@ export class AdminAlbumsComponent implements OnInit {
     this.indexToRemove = this.albumsKey[index];
   }
   /**
-   * Supprime de la base de donné une property
+   * Supprime de la base de donné une album
    */
   onConfirmDeleteAlbum() {
     this.albums[this.indexToRemove]?.photos?.forEach(
@@ -144,21 +142,20 @@ export class AdminAlbumsComponent implements OnInit {
     );
     this.albumsService.deleteAlbum(this.indexToRemove);
     this.albumsService.getAlbums();
-    this.albumsService.emitAlbums();
     $('#deleteAlbumModal').modal('hide');
   }
   /**
    * Permet de savoir si on est en mode édition ou non et si on l'est, cela ajoute directement les valeurs de la bonne preperty
-   *  property
+   *  album
    */
-  onEditAlbum(property: Album, i) {
+  onEditAlbum(album: Album, i) {
     this.editMode = true;
     $('#albumsFormModal').modal('show');
-    this.albumsForm.get('nom').setValue(property.nom);
-    this.albumsForm.get('annee').setValue(property.annee);
-    this.albumsForm.get('prix').setValue(property.prix);
-    this.albumsForm.get('artistId').setValue(property.artistId);
-    this.photosAdded = property.photos ? property.photos : [];
+    this.albumsForm.get('nom').setValue(album.nom);
+    this.albumsForm.get('annee').setValue(album.annee);
+    this.albumsForm.get('prix').setValue(album.prix);
+    this.albumsForm.get('artistId').setValue(album.artistId);
+    this.photosAdded = album.photos ? album.photos : [];
     this.indexToUpdate = this.albumsKey[i];
   }
   /**

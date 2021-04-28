@@ -3,20 +3,20 @@
   <div class="row mt-5">
     <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let album of albums; let i = index">
       <div class="card h-100" style="width: 18rem;">
-        <div *ngFor="let photo of album.photos; let first = first">
+        <div *ngFor="let photo of albums[albumsKeys[i]].photos; let first = first">
           <img [src]="photo" *ngIf="first" class="card-img-top">
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ album.nom }}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ album.category }}</h6>
+          <h5 class="card-title">{{ albums[albumsKeys[i]].nom }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ albums[albumsKeys[i]].category }}</h6>
           <span>
-            de {{ artists[album.artistId].nom}}
+            de {{ artists[albums[albumsKeys[i]].artistId].nom}}
           </span>
           <span>
-            sortie en {{ album.annee }}
+            sortie en {{ albums[albumsKeys[i]].annee }}
           </span>
           <p class="card-text">
-            {{ album.prix }} €
+            {{ albums[albumsKeys[i]].prix }} €
           </p>
           <div class="text-center">
             <button class="btn btn-primary" type="button" [routerLink]="['/album', albumsKeys[i]]">Voir cet

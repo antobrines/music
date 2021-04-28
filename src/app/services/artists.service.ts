@@ -20,6 +20,55 @@ export class ArtistsService {
   artistsSubject = new Subject<Artist[]>();
   artistsKeysSubject = new Subject<any[]>();
 
+  types = [
+    {
+      nom: 'Groupe',
+      value: 'G'
+    },
+    {
+      nom: 'Solo',
+      value: 'S'
+    }
+  ];
+
+  pays = [
+    {
+      nom: 'France',
+      value: 'FRA'
+    },
+    {
+      nom: 'Angleterre',
+      value: 'ANG'
+    },
+    {
+      nom: 'Canada',
+      value: 'CAN'
+    },
+    {
+      nom: 'Etats-unis',
+      value: 'USA'
+    }
+  ];
+
+  genres = [
+    {
+      nom: 'Jazz',
+      value: 'JAZ'
+    },
+    {
+      nom: 'Rock',
+      value: 'ROC'
+    },
+    {
+      nom: 'Pop',
+      value: 'POP'
+    },
+    {
+      nom: 'Heavy Metal',
+      value: 'HME'
+    }
+  ];
+
   constructor() { }
 
   /**
@@ -38,9 +87,9 @@ export class ArtistsService {
   /**
    * Récupère toutes les artists de la base de donné et l'envoyes la vue
    */
-  getArtists(order = false) {
+  getArtists(order = 'nom') {
     let i = 0;
-    firebase.database().ref('artists').orderByChild('nom').on('child_added', (data) => {
+    firebase.database().ref('artists').orderByChild(order).on('child_added', (data) => {
       this.artistsKeys[i] = data.ref.key;
       this.artists[this.artistsKeys[i++]] = data.val() ? data.val() : [];
       this.emitArtists();
@@ -90,5 +139,48 @@ export class ArtistsService {
         console.error(error);
       }
     );
+  }
+
+  getTypes() {
+    return this.types;
+  }
+
+  getTypeName(key) {
+    let typeName = null;
+    this.types.forEach((type) => {
+      if (type.value === key) {
+        typeName = type.nom;
+      }
+    });
+    return typeName;
+  }
+
+  getGenres() {
+    return this.genres;
+  }
+
+
+  getGenreName(key) {
+    let genreName = null;
+    this.genres.forEach((genre) => {
+      if (genre.value === key) {
+        genreName = genre.nom;
+      }
+    });
+    return genreName;
+  }
+
+  getPays() {
+    return this.pays;
+  }
+
+  getPaysName(key) {
+    let paysName = null;
+    this.pays.forEach((pays) => {
+      if (pays.value === key) {
+        paysName = pays.nom;
+      }
+    });
+    return paysName;
   }
 }

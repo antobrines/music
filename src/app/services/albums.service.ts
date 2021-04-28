@@ -47,7 +47,7 @@ export class AlbumsService {
     let i = 0;
     firebase.database().ref('albums').orderByChild(test).on('child_added', (data) => {
       this.albumsKey[i] = data.ref.key;
-      this.albums[i++] = data.val() ? data.val() : [];
+      this.albums[this.albumsKey[i++]] = data.val() ? data.val() : [];
       this.emitAlbums();
     });
   }
@@ -74,7 +74,17 @@ export class AlbumsService {
    * Permet de créer un album dans la BD
    */
   createAlbum(album: Album) {
+    const indexDot = album.prix.indexOf('.');
+    const lengthPrix = album.prix.length;
+    console.log(indexDot);
+    if (indexDot === 1) {
+      album.prix = '0' + album.prix;
+    }
+    if (indexDot === -1 && lengthPrix === 1) {
+      album.prix = '0' + album.prix;
+    }
     album.prix_nom = album.prix + '_' + album.nom;
+    album.nom = album.nom.charAt(0).toUpperCase() + album.nom.slice(1);
     this.albums.push(album);
     this.saveAlbums();
     this.emitAlbums();
@@ -91,6 +101,16 @@ export class AlbumsService {
    * Permet de modifier un album de la BD
    */
   updateAlbum(album: Album, index) {
+    const indexDot = album.prix.indexOf('.');
+    const lengthPrix = album.prix.length;
+    console.log(indexDot);
+    if (indexDot === 1) {
+      album.prix = '0' + album.prix;
+    }
+    if (indexDot === -1 && lengthPrix === 1) {
+      album.prix = '0' + album.prix;
+    }
+    album.nom = album.nom.charAt(0).toUpperCase() + album.nom.slice(1);
     album.prix_nom = album.prix + '_' + album.nom;
     firebase.database().ref('/albums/' + index).update(album).catch(
       (error) => {
@@ -147,7 +167,6 @@ export class AlbumsService {
   }
 
   deleteArtistAlbums(artistId) {
-    console.log(artistId);
     // tslint:disable-next-line:radix
     firebase.database().ref('albums')?.orderByChild('artistId').equalTo(parseInt(artistId)).on('child_added', (data) => {
       const album = data.val();
